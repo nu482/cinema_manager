@@ -1,0 +1,42 @@
+﻿@model Cinema_Manage.Models.Phim
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .gray-button {
+        background-color: #ccc;
+        color: #000;
+    }
+
+    .ngay-chieu {
+        padding: 5px 10px;
+        margin-bottom: 10px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+</style>
+<div>
+    <h2>Lịch chiếu - @Model.TenPhim</h2><br /><br />
+    @{
+        DateTime currentDate = DateTime.MinValue;
+        foreach (var gioChieu in Model.LichChieux)
+        {
+            var bayGio = DateTime.Now;
+            if (gioChieu.ThoiGian >= bayGio)
+            {
+                // Nếu là ngày mới, hiển thị tiêu đề ngày
+                if (gioChieu.ThoiGian.Date != currentDate)
+                {
+                    currentDate = gioChieu.ThoiGian.Date;
+                    <p class="ngay-chieu">@currentDate.ToShortDateString()</p>
+                }
+                <a href="@Url.Action("ChonGhe", "MuaVe", new { area = "", maLichChieu = gioChieu.MaLichChieu })" class="btn gray-button">@gioChieu.ThoiGian.ToShortTimeString()</a>
+
+            }
+        }
+    }
+</div>
+
+

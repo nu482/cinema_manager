@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Cinema_Manage.Models.thongkengay>
+
+<table class="table">
+    <tr>
+        <th>
+            Ngày
+        </th>
+        <th>
+            Doanh thu
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Ngay.ToShortDateString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalRevenue)
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,164 @@
+﻿@model Cinema_Manage.Models.Phim
+@{
+    ViewBag.Title = "PhimDetail";
+}
+<style>
+    table {
+        background-color: rgba(245, 245, 245, 0.8);
+        border-radius: 10px;
+    }
+    .black-link {
+        color: black;
+        text-decoration: none;
+    }
+
+    .tieude {
+        font-weight: bold;
+    }
+
+    .imgthumb {
+        height: 400px;
+        width: auto;
+        border-radius: 15px;
+        position: relative;
+    }
+
+    .play-overlay {
+        position: absolute;
+        top: 350px;
+        left: 275px;
+        transform: translate(-50%, -50%);
+        display: none;
+    }
+
+        .play-overlay img {
+            width: 50px;
+            cursor: pointer;
+        }
+
+    .img-container:hover .play-overlay {
+        display: block;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 5px;
+        border: 1px solid #888;
+        width: 120%;
+        height: auto;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .modal-header .close {
+        margin-left: auto;
+        margin-top: 10px;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+<h3>@Html.ActionLink("Trang chủ", "Index", null, new { @class = "black-link" }) > @Html.DisplayFor(model => model.TenPhim)</h3>
+<br />
+<br />
+<table height="400px" ">
+    <tr>
+        <td rowspan="5" width="300px">
+            <div class="img-container">
+                <img src="@Model.HinhAnh" alt="@Model.TenPhim" class="imgthumb">
+                <button class="play-overlay watch-trailer-btn" data-trailer="@Model.Trailer" style="background-color: transparent; border: none;"><img src="~/Image/play.png" /></button>
+            </div>
+        </td>
+        <td colspan="2" height="30px">
+            <h3 style="font-weight:bold">@Model.TenPhim</h3>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" height="auto">@Model.Mota</td>
+    </tr>
+    <tr>
+        <td width="200px" class="tieude">Đạo Diễn:</td>
+        <td>@Model.DaoDien</td>
+    </tr>
+    <tr>
+        <td class="tieude">Thể Loại:</td>
+        <td>@Model.TheLoai.TenTheLoai</td>
+    </tr>
+    <tr>
+        <td class="tieude">Thời Lượng:</td>
+        <td>@Model.ThoiLuong</td>
+    </tr>
+</table>
+@{
+    if (Session["user"] != null)
+    {
+        @Html.ActionLink("Mua Vé", "Odr", "MuaVe", new { area = "", maPhim = Model.MaPhim }, new { @class = "btn btn-primary" })
+    }
+    else
+    {
+        @Html.ActionLink("Mua Vé", "Login", "Home", new { area = "" }, new { @class = "btn btn-primary" })
+    }
+}
+
+
+<div class="modal fade" id="trailer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">TRAILER</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="trailer-video" width="560" height="315" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jquery")
+    <script>
+        $(document).ready(function () {
+            $('.watch-trailer-btn').click(function () {
+                var trailerUrl = $(this).data('trailer');
+                $('#trailer-video').attr('src', trailerUrl);
+                $('#trailer-modal').modal('show');
+            });
+            $('#trailer-modal').click(function (e) {
+                if (e.target === this) {
+                    $('#trailer-video').attr('src', '');
+                    $('#trailer-modal').modal('hide');
+                }
+            });
+            $('.close').click(function () {
+                $('#trailer-video').attr('src', '');
+                $('#trailer-modal').modal('hide');
+            });
+        });
+    </script>
+}

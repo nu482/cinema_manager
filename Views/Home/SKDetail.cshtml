@@ -1,0 +1,23 @@
+﻿@model Cinema_Manage.Models.SuKien
+
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+
+        <h2>@Html.DisplayFor(model => model.TieuDe)</h2><br /><br />
+        
+
+        <dt>
+            Nội dung
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChiTiet)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Quay lại", "SuKien")
+</p>

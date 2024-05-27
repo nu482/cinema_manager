@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Cinema_Manage.Models.SuKien>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    a {
+        text-decoration: none; /* Bỏ gạch chân */
+        color: black; /* Đổi màu chữ thành đen */
+        font-weight: bold; /* In đậm */
+    }
+</style>
+<h2>SỰ KIỆN TẠI RẠP</h2><br /><br />
+
+
+@foreach (var item in Model)
+{
+    <span class="event-link">
+        @Html.ActionLink(item.TieuDe, "SKDetail", new { id = item.MaSuKien.Trim() })
+    </span>
+    <br />
+    <br />
+}
+

@@ -1,0 +1,118 @@
+﻿@model Cinema_Manage.Models.NguoiDung
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Người dùng mới</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        Tài khoản
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        mật khẩu
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Vai trò
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.VaiTro, new SelectList(new[]
+            {
+                new SelectListItem { Text = "Khách hàng", Value = "4" },
+                new SelectListItem { Text = "Admin", Value = "1" },
+                new SelectListItem { Text = "Nhân viên bán hàng", Value = "2" },
+                new SelectListItem { Text = "Nhân viên quản lí", Value = "3" }
+            }, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.VaiTro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group" id="khachHang" style="display:none;">
+        Tên
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.KhachHang.Ten, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.KhachHang.Ten, "", new { @class = "text-danger" })
+        </div>
+        Địa chỉ
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.KhachHang.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.KhachHang.DiaChi, "", new { @class = "text-danger" })
+        </div>
+        Số điện thoại
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.KhachHang.SoDienThoai, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.KhachHang.SoDienThoai, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group" id="nhanVien" style="display:none;">
+        Tên
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.NhanVien.TenNhanVien, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.NhanVien.TenNhanVien, "", new { @class = "text-danger" })
+        </div>
+        Số điện thoại
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.NhanVien.SoDienThoai, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.NhanVien.SoDienThoai, "", new { @class = "text-danger" })
+        </div>
+        Email
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.NhanVien.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.NhanVien.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+</div>
+    
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('#VaiTro').change(function () {
+                if ($(this).val() === "0") {
+                    $('#khachHang').show();
+                    $('#nhanVien').hide();
+                } else {
+                    $('#khachHang').hide();
+                    $('#nhanVien').show();
+                }
+            });
+
+            // Ẩn hoặc hiện ô nhập số điện thoại khi trang được tải lần đầu
+            if ($('#VaiTro').val() === "0") {
+                $('#khachHang').show();
+                $('#nhanVien').hide();
+            } else {
+                $('#khachHang').hide();
+                $('#nhanVien').show();
+            }
+        });
+    </script>
+}

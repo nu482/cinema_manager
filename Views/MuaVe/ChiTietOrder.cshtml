@@ -1,0 +1,32 @@
+﻿@model Cinema_Manage.Models.Oder
+
+<h2>Chi tiết Order</h2>
+<p>Mã Order: @Model.OderCode</p>
+<p>Thời Gian: @Model.ThoiGian</p>
+<p>Tổng Tiền: @Model.TongTien</p>
+
+<h3>Danh sách Ghế:</h3>
+<ul>
+    @foreach (var gheLC in Model.GheLCs)
+    {
+        <li>@gheLC.SoGhe</li>
+    }
+</ul>
+
+<h3>Danh sách Combo:</h3>
+<ul>
+    @foreach (var oderCombo in Model.Combo_Oder)
+    {
+        string ten ="";
+        foreach(var combo in ViewBag.Combos)
+        {
+            if (oderCombo.MaCombo.Trim() == combo.MaCombo.Trim())
+            {
+                ten = combo.ChiTiet;
+                break;
+            }
+
+        }
+        <li>@ten - Số lượng: @oderCombo.SoLuong</li>
+    }
+</ul>

@@ -1,0 +1,45 @@
+﻿@model Cinema_Manage.Models.NguoiDung
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h3>Xóa tài khoản này?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+           UID: 
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UID)
+        </dd>
+
+        <dt>
+           Tài Khoản
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+
+        <dt>
+            Mật Khẩu:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-default" /> |
+            @Html.ActionLink("Quay lại", "Index")
+        </div>
+    }
+</div>

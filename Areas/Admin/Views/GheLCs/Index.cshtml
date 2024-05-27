@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Cinema_Manage.Models.GheLC>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Danh Sách Vé</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Mã Vé
+        </th>
+        <th>
+            Mã Ghế
+        </th>
+        <th>
+            Mã Phòng
+        </th>
+        <th>
+            Mã Order
+        </th>
+        <th>
+            Mã Lịch Chiếu
+        </th>
+        <th>
+            Loại Ghế
+        </th>
+        <th>
+            Số Ghế
+        </th>
+        <th>
+            Giá
+        </th>
+        <th>
+            Tình trạng
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaGhe)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaPhong)
+        </td>
+        <td>
+            @if (item.OderCode == null)
+            {
+                <p>-</p>
+            }
+            else
+            {
+                <p>@item.OderCode</p>
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaLichChieu)
+        </td>
+        <td>
+            @if(item.LoaiGhe.Trim() == "1")
+                {
+                    <p>Thường</p>
+                }
+            else
+                {
+                    <p>VIP</p>
+                }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SoGhe)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GiaGhe)
+        </td>
+        <td>
+            @if (item.TinhTrang == false)
+            {
+                <p>chưa đặt</p>
+            }
+            else
+            {
+                <p>đã đặt</p>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Sửa", "Edit", new { id=item.ID.Trim() }) |
+            @Html.ActionLink("Xóa", "Delete", new { id=item.ID.Trim() })
+        </td>
+    </tr>
+}
+
+</table>

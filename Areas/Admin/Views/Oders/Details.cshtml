@@ -1,0 +1,101 @@
+﻿@model Cinema_Manage.Models.Oder
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Oder</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.KhachHang.Ten)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KhachHang.Ten)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ThoiGian)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ThoiGian)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TongTien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TongTien)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TrangThai)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TrangThai)
+        </dd>
+
+        <h3>Danh sách Ghế:</h3>
+        <table>
+            <tr>
+                <th>Mã Vé</th>
+                <th>Số Ghế</th>
+                <th>Phòng</th>
+                <th>Phim</th>
+                <th>Thời gian chiếu</th>
+            </tr>
+            <tr>
+                @foreach (var gheLC in Model.GheLCs)
+                {
+                    string tenP = "";
+                    string phong = "";
+                    DateTime ngay = DateTime.Now;
+                    foreach (var phim in ViewBag.lich)
+                    {
+                        if (gheLC.MaLichChieu.Trim() == phim.MaLichChieu.Trim())
+                        {
+                            tenP = phim.Phim.TenPhim;
+                            ngay = phim.ThoiGian;
+                            phong = phim.PhongChieu.TenPhong;
+                            break;
+                        }
+
+                    }
+                    <td>@gheLC.ID</td>
+                    <td>@gheLC.SoGhe</td>
+                    <td>@phong</td>
+                    <td>@tenP</td>
+                    <td>@ngay</td>
+                }
+            </tr>
+        </table>
+        <h3>Danh sách Combo:</h3>
+        <ul>
+            @foreach (var oderCombo in Model.Combo_Oder)
+            {
+                string ten = "";
+                foreach (var combo in ViewBag.Combos)
+                {
+                    if (oderCombo.MaCombo.Trim() == combo.MaCombo.Trim())
+                    {
+                        ten = combo.ChiTiet;
+                        break;
+                    }
+
+                }
+                <li>@ten - Số lượng: @oderCombo.SoLuong</li>
+            }
+        </ul>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.OderCode.Trim() }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

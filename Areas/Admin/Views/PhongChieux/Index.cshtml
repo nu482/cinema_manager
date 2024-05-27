@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Cinema_Manage.Models.PhongChieu>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Danh Sách Phòng Chiếu</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Phòng
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TenPhong)
+        </td>
+        <td>
+            @Html.ActionLink("Cập Nhật", "Edit", new { id=item.MaPhong.Trim() }) |
+            @Html.ActionLink("Xóa", "Delete", new { id=item.MaPhong.Trim() })
+        </td>
+    </tr>
+}
+
+</table>
+<p>
+    @Html.ActionLink("Phòng Mới", "Create")
+</p>

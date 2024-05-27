@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Cinema_Manage.Models.SuKien>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Sự Kiện</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Mã sự kiện
+        </th>
+        <th>
+            Tiêu đề
+        </th>
+        <th>Tình trạng up bài</th>
+        <th>
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaSuKien)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TieuDe)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.upbai)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.MaSuKien.Trim() }) |
+            @Html.ActionLink("Details", "Details", new { id=item.MaSuKien.Trim() }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.MaSuKien })
+        </td>
+    </tr>
+}
+
+</table>

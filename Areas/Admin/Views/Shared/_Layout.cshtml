@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .sidebar ul li {
+            position: relative; 
+        }
+
+            .sidebar ul li:hover .sub-menu {
+                display: block; 
+                position: absolute; 
+                top: 0; 
+                left: 100%; 
+                background-color: #222; 
+                min-width: 150px; 
+                z-index: 1000; 
+            }
+
+                .sidebar ul li:hover .sub-menu li {
+                    width: 100%; /* Đặt chiều rộng của mỗi mục menu cấp 2 */
+                }
+
+            .sidebar ul li .sub-menu {
+                display: none; /* Ẩn menu cấp 2 mặc định */
+            }
+
+        /* CSS để định dạng menu dọc */
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #222;
+            padding-top: 20px;
+        }
+
+            .sidebar ul {
+                padding: 0;
+                list-style: none;
+            }
+
+            .sidebar li {
+                margin-bottom: 10px;
+            }
+
+            .sidebar a {
+                padding: 10px 20px;
+                text-decoration: none;
+                font-size: 18px;
+                color: white;
+                display: block;
+            }
+
+                .sidebar a:hover {
+                    background-color: #444;
+                }
+
+        .content {
+            margin-left: 250px; /* Khoảng cách từ nội dung đến mép trái của menu */
+            padding: 20px;
+        }
+        /* Phần nội dung */
+        .content {
+            margin-top: 20px;
+        }
+
+            /* Bảng */
+            .content table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .content th, .content td {
+                padding: 8px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .content th {
+                background-color: #f2f2f2;
+                color: #333;
+            }
+
+            /* Form */
+            .content form {
+                margin-bottom: 20px;
+            }
+
+                .content form label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-weight: bold;
+                }
+
+                .content form input[type="text"],
+                .content form input[type="email"],
+                .content form textarea {
+                    width: 100%;
+                    padding: 8px;
+                    margin-bottom: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+                .content form button {
+                    background-color: #007bff;
+                    color: #fff;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+
+                    .content form button:hover {
+                        background-color: #0056b3;
+                    }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        @if (Session["user"] == null)
+        {
+            <div>Đăng nhập lại</div>
+        }
+        else
+        {
+            var user = (Cinema_Manage.Models.NguoiDung)Session["user"];
+            if (user.VaiTro.Trim() == "1")
+            {
+                <ul>
+                    <li>
+                        <a href="#">Thống kê</a>
+                        <ul class="sub-menu">
+                            <li>@Html.ActionLink("Doanh Thu", "Welcome", "AdminSite", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Quản lí</a>
+                        <ul class="sub-menu">
+                            <li>@Html.ActionLink("Order", "Index", "Oders", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Vé", "Index", "GheLCs", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Phim", "Index", "Phims", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Nhà Phân Phối", "Index", "NhaPhanPhois", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Thể Loại", "Index", "TheLoais", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Phòng Chiếu", "Index", "PhongChieux", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Ghế", "Index", "Ghes", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Người Dùng", "Index", "NguoiDungs", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Combo", "Index", "Comboes", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Lịch Chiếu", "Index", "LichChieux", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Sự kiện", "Index", "SuKiens", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                        </ul>
+                    </li>
+                </ul>
+            }
+            else
+                {
+    <ul>
+        <li>@Html.ActionLink("Order", "Index", "Oders", new { area = "Admin" }, new { @class = "nav-link" })</li>
+        <li>@Html.ActionLink("Vé", "Index", "GheLCs", new { area = "Admin" }, new { @class = "nav-link" })</li>
+        <li>@Html.ActionLink("Combo", "Index", "Comboes", new { area = "Admin" }, new { @class = "nav-link" })</li>
+    </ul>
+                }
+        }
+        @Html.ActionLink("Đăng Xuất", "Logout", "Home", new { area = "" }, new { @class = "" })
+    </div>
+    <!-- Nội dung của trang -->
+    <div class="content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

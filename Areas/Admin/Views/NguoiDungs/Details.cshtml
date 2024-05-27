@@ -1,0 +1,98 @@
+﻿@model Cinema_Manage.Models.NguoiDung
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Thông tin</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            UID:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UID)
+        </dd>
+
+        @if (Model.VaiTro.Trim() == "4")
+        {
+            <dt>
+                Tên:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.KhachHang.Ten)
+            </dd>
+            <dt>
+                Điện thoại:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.KhachHang.SoDienThoai)
+            </dd>
+            <dt>
+                Điạ Chỉ:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.KhachHang.DiaChi)
+            </dd>
+        }
+        else
+        {
+            <dt>
+                Tên:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NhanVien.TenNhanVien)
+            </dd>
+            <dt>
+                Điện thoại:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NhanVien.SoDienThoai)
+            </dd>
+            <dt>
+                Email:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NhanVien.Email)
+            </dd>
+        }
+
+        <dt>
+            Tài Khoản:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+
+        <dt>
+            Mật khẩu:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+        <dt>
+            Vai trò
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VaiTro)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.UID.Trim() }) |
+    @Html.ActionLink("Quay lại", "Index")
+</p>

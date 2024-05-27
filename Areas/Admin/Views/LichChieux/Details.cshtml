@@ -1,0 +1,41 @@
+﻿@model Cinema_Manage.Models.LichChieu
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Chi Tiết</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Phim:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phim.TenPhim)
+        </dd>
+
+        <dt>
+            Phòng Chiếu:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhongChieu.TenPhong)
+        </dd>
+
+        <dt>
+            Thời Gian:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ThoiGian)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Cập Nhật", "Edit", new { id = Model.MaLichChieu.Trim() }) |
+    @Html.ActionLink("Trở Lại", "Index")
+</p>

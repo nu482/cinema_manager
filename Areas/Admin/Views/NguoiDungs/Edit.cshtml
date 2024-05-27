@@ -1,0 +1,124 @@
+﻿@model Cinema_Manage.Models.NguoiDung
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Sửa thông tin</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.UID)
+    @Html.HiddenFor(model => model.Username)
+
+<div class="form-group">
+    UID:  @Html.DisplayFor(model => model.UID)<br />
+    Username:  @Html.DisplayFor(model => model.Username)
+</div>
+
+    <div class="form-group">
+        Mật Khẩu:
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @if (Model.VaiTro.Trim() == "4")
+    {
+        <div class="form-group">
+            Tên:
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.KhachHang.Ten, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.KhachHang.Ten, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Điện Thoại:
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.KhachHang.SoDienThoai, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.KhachHang.SoDienThoai, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            Địa Chỉ:
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.KhachHang.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.KhachHang.DiaChi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.VaiTro, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.VaiTro, new SelectList(new[]
+                {
+                    new SelectListItem { Text = "Khách Hàng", Value = "4" },
+
+                }, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.VaiTro, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="form-group">
+            Tên:
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NhanVien.TenNhanVien, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NhanVien.TenNhanVien, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Điện Thoại:
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NhanVien.SoDienThoai, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NhanVien.SoDienThoai, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Email:
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NhanVien.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NhanVien.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.VaiTro, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.VaiTro, new SelectList(new[]
+                {
+                    new SelectListItem { Text = "Admin", Value = "1" },
+                    new SelectListItem { Text = "Nhân viên bán hàng", Value = "2" },
+                    new SelectListItem { Text = "Nhân viên quản lí", Value = "3" }
+                }, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.VaiTro, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    }
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Lưu" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

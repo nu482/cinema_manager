@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Cinema_Manage.Models.myorder>
+
+<style>
+    table {
+        width: 1100px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+<table>
+    <tr>
+        <th width="100px">Mã Order</th>
+        <th width="200px">Thời Gian</th>
+        <th width="400px">Phim</th>
+        <th width="100px">Phòng</th>
+        <th width="200px">Giờ Chiếu</th>
+    </tr>
+    @foreach (var order in Model)
+    {
+        <tr>
+            <td>@order.OrderCode</td>
+            <td>@order.ThoiGian</td>
+            <td>@order.TenPhim</td>
+            <td>@order.Phong</td>
+            <td>@order.GioChieu</td>
+            <td><a href="@Url.Action("ChiTietOrder", "MuaVe", new { orderId = @order.OrderCode })">Chi tiết</a></td>
+        </tr>
+    }
+</table>
+

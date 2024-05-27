@@ -1,0 +1,274 @@
+﻿@model Cinema_Manage.Models.LichChieu
+
+<style>
+    .seat-row {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .seat-btn {
+        margin-right: 10px;
+        padding: 10px;
+        width: 40px;
+        height: 40px;
+        background-color: #ccc;
+        border: 1px solid #999;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .seat-btn.selected {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .seat-btn.occupied {
+            background-color: #ff0000;
+        }
+
+        .seat-btn.type1 {
+            background-color: #808080;
+        }
+
+        .seat-btn.type2 {
+            background-color: #ffd700;
+        }
+
+    .screen {
+        width: 500px;
+        margin: 0 auto;
+        height: 20px;
+        border: 1px solid #ccc;
+        background-color: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+@{
+    string MaKhachHang = null;
+    if (Session["user"] != null)
+    {
+        var user = (Cinema_Manage.Models.NguoiDung)Session["user"];
+        MaKhachHang = user.UID;
+    }
+}
+
+<div style="display: flex;">
+    <div style="width: 50%;">
+        <h2 style="text-align: center;">CHỌN GHẾ</h2>
+
+
+
+        <div>
+            <div class="screen">MÀN HÌNH</div>
+            <br /><br />
+
+            <div class="seat-container">
+                @{
+                    var danhSachGhe = Model.GheLCs.ToList();
+                    int soHang = (int)Math.Ceiling((double)danhSachGhe.Count / 10);
+                    for (int i = 0; i < soHang; i++)
+                    {
+                        <div class="seat-row">
+                            @for (int j = i * 10; j < (i + 1) * 10 && j < danhSachGhe.Count; j++)
+                            {
+                                var seat = danhSachGhe[j];
+                                string seatClass = "seat-btn";
+                                if (seat.TinhTrang == true)
+                                {
+                                    seatClass += " occupied";
+                                }
+                                else
+                                {
+                                    if (seat.LoaiGhe.Trim() == "1")
+                                    {
+                                        seatClass += " type1";
+                                    }
+                                    else if (seat.LoaiGhe.Trim() == "2")
+                                    {
+                                        seatClass += " type2";
+                                    }
+                                }
+                                <button type="button" class="@seatClass" data-gheid="@seat.ID" data-giaghe="@seat.GiaGhe">@seat.SoGhe</button>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div style="width: 50%;">
+        <div style="width: 100%;">
+            <h3 style="text-align: center;">CHỌN BỎNG NƯỚC</h3>
+            <table style="margin: auto; background-color: rgba(245, 245, 245, 0.8);">
+                <thead>
+                    <tr>
+                        <th width="250px">Combo</th>
+                        <th width="100px">Giá</th>
+                        <th>Số lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var combo in ViewBag.Combos)
+                    {
+                        <tr>
+                            <td>@combo.ChiTiet</td>
+                            <td>@combo.Gia</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <button type="button" onclick="decrementQuantity(this)">-</button>
+                                    <input type="text" class="combo-input" name="quantity_@combo.MaCombo" value="0" min="0" style="width:20px" data-combo='@Json.Encode(combo)' />
+                                    <button type="button" onclick="incrementQuantity(this)">+</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div style="text-align: center; margin-top: 20px;">
+    <h3>Thông tin Oder</h3>
+    <table style="margin: auto;">
+        <thead>
+            <tr>
+                <th width="200px">Tên</th>
+                <th width="150px">Giá</th>
+                <th width="100px">Số lượng</th>
+                <th width="150px">Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody id="bookingInfo">
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" style="text-align: right;">Tổng tiền:</td>
+                <td id="totalPrice">0</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px;">
+    <button type="submit" id="submitBtn">Thanh toán</button>
+</div>
+@section scripts {
+    <script>
+        function generateOrderCode() {
+            return 'OD' + Math.floor(Math.random() * 1000000);
+        }
+
+        $('#submitBtn').click(function () {
+            var selectedSeats = [];
+            var totalPrice = parseFloat($('#totalPrice').text());
+            var orderCode = generateOrderCode();
+
+            $('.seat-btn.selected').each(function () {
+                selectedSeats.push({
+                    id: $(this).data('gheid')
+                });
+            });
+
+            var selectedCombos = [];
+            $('.combo-input').each(function () {
+                var input = $(this);
+                var quantity = parseInt(input.val());
+                if (quantity > 0) {
+                    var combo = JSON.parse(input.attr('data-combo'));
+                    var comboPrice = combo.Gia * quantity;
+                    selectedCombos.push({
+                        code: combo.MaCombo,
+                        quantity: quantity
+                    });
+                }
+            });
+
+            const orders = {
+                TongTien: totalPrice,
+                MaKhachHang: "@MaKhachHang",
+                OrderCode: orderCode,
+                SelectedSeats: selectedSeats,
+                SelectedCombos: selectedCombos
+            };
+
+            $.post('/MuaVe/SaveOrder', { orders: orders }, function (data) {
+                if (data.success) {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert('Đặt vé thất bại. Vui lòng thử lại.');
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('.seat-btn').click(function () {
+                if (!$(this).hasClass('occupied')) {
+                    $(this).toggleClass('selected');
+                    updateBookingInfo();
+                }
+            });
+
+            function updateBookingInfo() {
+                $('#bookingInfo').empty();
+                var totalPrice = 0;
+
+                $('.seat-btn.selected').each(function () {
+                    var seat = $(this);
+                    var seatInfo = seat.text();
+                    var seatPrice = seat.data('giaghe');
+                    var row = $('<tr>').append(
+                        $('<td>').text('Ghế ' + seatInfo),
+                        $('<td>').text(seatPrice),
+                        $('<td>').text(1),
+                        $('<td>').text(seatPrice)
+                    );
+                    $('#bookingInfo').append(row);
+                    totalPrice += seatPrice;
+                });
+
+                $('.combo-input').each(function () {
+                    var input = $(this);
+                    var quantity = parseInt(input.val());
+                    if (quantity > 0) {
+                        var combo = JSON.parse(input.attr('data-combo'));
+                        var comboInfo = combo.ChiTiet;
+                        var comboPrice = combo.Gia * quantity;
+                        var row = $('<tr>').append(
+                            $('<td>').text(comboInfo),
+                            $('<td>').text(combo.Gia),
+                            $('<td>').text(quantity),
+                            $('<td>').text(comboPrice)
+                        );
+                        $('#bookingInfo').append(row);
+                        totalPrice += comboPrice;
+                    }
+                });
+
+                $('#totalPrice').text(totalPrice);
+            }
+
+            window.decrementQuantity = function(button) {
+                var input = button.nextElementSibling;
+                var value = parseInt(input.value);
+                if (value > 0) {
+                    input.value = value - 1;
+                    updateBookingInfo();
+                }
+            };
+
+            window.incrementQuantity = function(button) {
+                var input = button.previousElementSibling;
+                var value = parseInt(input.value);
+                input.value = value + 1;
+                updateBookingInfo();
+            };
+        });
+    </script>
+}

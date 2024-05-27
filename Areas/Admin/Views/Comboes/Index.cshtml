@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Cinema_Manage.Models.Combo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Danh Sách Combo</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Mã Combo
+        </th>
+        <th>
+            Combo
+        </th>
+        <th>
+            Giá
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaCombo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChiTiet)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Gia)
+        </td>
+        <td>
+            @Html.ActionLink("Sửa", "Edit", new { id = item.MaCombo.Trim() }) |
+            @Html.ActionLink("Xóa", "Delete", new { id = item.MaCombo.Trim() })
+        </td>
+    </tr>
+}
+
+</table>
+<p>
+    @Html.ActionLink("Thêm", "Create")
+</p>
